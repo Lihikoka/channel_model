@@ -33,13 +33,13 @@ function [sigmaA_L_in_degree, sigmaA_G_in_degree, sigma_L_in_degree, sigma_G_in_
         P_G(j) = Q_G/(sqrt(2*pi)*sigma)*exp(-(ii)^2/(2*sigma^2));
         
         P_L_general(j) = 1/(sqrt(2)*sigma)*exp(-sqrt(2)*abs(ii)/sigma);
-        P_G_general(j) = 1/(sqrt(2)*sigma)*exp(-sqrt(2)*abs(ii)/sigma);
+        P_G_general(j) = 1/(sqrt(2*pi)*sigma)*exp(-(ii)^2/(2*sigma^2));
 
         cdf_G = cdf_G + P_G_general(j)*(0.01*pi/180);
         cdf_L = cdf_L + P_L_general(j)*(0.01*pi/180);
-
-        sigma_G = sigma_G + ii*ii*P_G_general(j)*(0.01*pi/180);
+        
         sigma_L = sigma_L + ii*ii*P_L_general(j)*(0.01*pi/180);
+        sigma_G = sigma_G + ii*ii*P_G_general(j)*(0.01*pi/180);
 
         if i >= -delta_phi_L*180/pi && i <= delta_phi_L*180/pi
             sigmaA_L = sigmaA_L + ii*ii*P_L(j)*(0.01*pi/180);
@@ -60,10 +60,10 @@ function [sigmaA_L_in_degree, sigmaA_G_in_degree, sigma_L_in_degree, sigma_G_in_
 %     sqrt(sigma_G)
 %     sigma
     
-    sigmaA_L_in_degree = sqrt(sigmaA_L) * 180 / pi;
-    sigmaA_G_in_degree = sqrt(sigmaA_G) * 180 / pi;
+    sigmaA_L_in_degree = sqrt(sigmaA_L)*180/pi;
+    sigmaA_G_in_degree = sqrt(sigmaA_G)*180/pi;
     
-    if(sigma_in_degree == 70)
+    if(sigma_in_degree == 10)
         figure(1)
         plot(phi_in_degree, P_L)
         hold on;
