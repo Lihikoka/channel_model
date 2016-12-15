@@ -3,17 +3,23 @@ clear
 
 frequency = '28_GHz';
 scenario = 'outdoor';
-N = 100;
-cluster_number = 1;
-
+N=100;
 string = ['load Results_',frequency,'_',scenario,'_',num2str(N),'_CIRs'];
 eval(string);
 
-CIR = CIR_Struct.CIR_1;
-fields = fieldnames(CIR);
-hh = CIR.('H')(1);
-hh{1, 1};
-P_l = CIR.('pathPowers');
+for i = 1:N
+    string = ['CIR(', num2str(i), ') = ', 'CIR_Struct.CIR_', num2str(i), ';'];
+    eval(string);
+end
 
-A_l = randn(4);
-a_l = reshape(A_l, [1, size(A_l, 1)^2]);
+AoAMean = 0;
+for i = 1:N
+    AoAMean = AoAMean + mean(CIR(i).AOAs)/N;
+end
+
+AoAVariance = 0;
+for i = 1:N
+    AoAVariance = AoAVariance + 
+end
+
+
