@@ -1,7 +1,7 @@
 clc
 clear
 
-sigma_in_degree = 0:1:120;
+sigma_in_degree = 0:1:360;
 
 sigmaA_L_in_degree = zeros(1, length(sigma_in_degree));
 sigmaA_G_in_degree = zeros(1, length(sigma_in_degree));
@@ -15,7 +15,9 @@ figure(2)
 plot(sigmaA_G_in_degree, sigma_in_degree);
 hold on
 plot(sigmaA_L_in_degree, sigma_in_degree);
-axis([0, 80, 0, 120])
+% axis([0, 80, 0, 120])
 grid on
 legend('Gaussian PAS', 'Laplacian PAS');
+xlabel('AS(deg)');
+ylabel('sigma(deg)');
 
