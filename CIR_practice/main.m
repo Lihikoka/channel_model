@@ -33,15 +33,14 @@ for i = 1:length(allAOA)
     AOAGraph(AOAIndex) = AOAGraph(AOAIndex) + 1;
 end
 
-sum = 0;
+count = 0;
 for i = 1:length(AOARange)
-    sum = sum + AOAGraph(i);
+    count = count + AOAGraph(i);
     if ~mod(AOARange(i), 1)
-        AOApdf(i) = sum/length(allAOA);
-        sum=0;
+        AOApdf(i) = count/length(allAOA);
+        count=0;
     end
 end
-
 
 figure(1)
 plot(AOARange, AOApdf)
