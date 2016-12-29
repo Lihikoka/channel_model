@@ -5,7 +5,7 @@
 % This script runs the NYU-Simulator
 %
 % Variable inputs to this script:
-%   N (number of CIRs to generate)
+%   N (number of CIRs to genearate)
 %   See loadUserInputs.m in the ReadFiles folder
 %
 % Outputs of this script:
@@ -62,13 +62,13 @@ clc
 close all
 
 % master folder, and add path to all underlying subfolders
-%setMasterFolder
+setMasterFolder
 
 % Folder where the output is saved;
-resultsFolder = ['D:\Users\yenhua\Documents\github\channel_model\CIR_practice\'];
+resultsFolder = [masterFolder,'\Results'];
 
 % Load user inputs
-%loadUserInputs
+loadUserInputs
 
 %%%%%%%%%%%%%%%%%
 % NYU-Simulator %
@@ -76,163 +76,39 @@ resultsFolder = ['D:\Users\yenhua\Documents\github\channel_model\CIR_practice\']
 
 % Generate N Channel Impulse Reponses (CIRs): one for each of the N users
 % Output of generateCIR: CIR_Struct
-% generateCIR
+generateCIR
 
 % Output the generated CIRs
-% CIR_Struct;
+CIR_Struct;
 
 % Generate the local area CIRs based on the previously generated single
 % CIRs
-% CIR_Struct = getLocalCIR(CIR_Struct,TxArrayType,RxArrayType,Nt,Nr,Wt,Wr,dTxAnt,dRxAnt);
+CIR_Struct = getLocalCIR(CIR_Struct,TxArrayType,RxArrayType,Nt,Nr,Wt,Wr,dTxAnt,dRxAnt);
 
 % Compute RMS DS and RMS Angular Spreads, and output to .txt files
-% cd(resultsFolder)
-%  AS = extractStatistics(CIR_Struct)
+cd(resultsFolder)
+extractStatistics(CIR_Struct)
 
 % Save output for later processing
-% save(['Results_',frequency,'_',scenario,'_',num2str(N),'_CIRs'],'CIR_Struct')
-frequency = '28_GHz';
-scenario = 'outdoor';
-N=100;
-load([resultsFolder, 'Results_', frequency,'_',scenario,'_',num2str(N),'_CIRs'])
+save(['Results_',frequency,'_',scenario,'_',num2str(N),'_CIRs'],'CIR_Struct')
 
 %===
 % Plotting
-% h1_delay = CIR_Struct.CIR_1.pathDelays;
-% h1_power = CIR_Struct.CIR_1.pathPowers;
-% 
-% h2_delay = CIR_Struct.CIR_2.pathDelays;
-% h2_power = CIR_Struct.CIR_2.pathPowers;
-% 
-% subplot(1,2,1);
-% stem(h1_delay, h1_power, 'r');
-% xlabel('Path delay (ns)');
-% ylabel('Path power (mW)');
-% 
-% subplot(1,2,2);
-% stem(h2_delay, h2_power, 'b');
-% xlabel('Path delay (ns)');
-% ylabel('Path power (mW)');
+h1_delay = CIR_Struct.CIR_1.pathDelays;
+h1_power = CIR_Struct.CIR_1.pathPowers;
 
+h2_delay = CIR_Struct.CIR_2.pathDelays;
+h2_power = CIR_Struct.CIR_2.pathPowers;
 
-H_delay=[];
-H_aoa=[];
-H_aod=[];
-H_power=[];
-for ii = 1:N
-    H_delay= cat(2,H_delay, CIR_Struct.(['CIR_', num2str(ii)]).pathDelays');
-    H_aoa= cat(2,H_aoa, CIR_Struct.(['CIR_', num2str(ii)]).AOAs');
-    H_aod= cat(2,H_aod, CIR_Struct.(['CIR_', num2str(ii)]).AODs');
-    H_power= cat(2,H_power, CIR_Struct.(['CIR_', num2str(ii)]).pathPowers');
-end
-% set(gca,'xTick',-2*pi:pi/2:2*pi);
-% set(gca,'xTickLabel',{'0','2*pi','-2*pi'});
-H_aoa_wrap = wrap(H_aoa,1);
-% [Asorted,I_a]=sort(H_aoa);
-% plot(Asorted,(I_a));
-% H_aoa = mod(H_aoa,360);
+subplot(1,2,1);
+stem(h1_delay, h1_power, 'r');
+xlabel('Path delay (ns)');
+ylabel('Path power (mW)');
 
- fh1 = figure(1);
-% [data,bin] = ksdensity(H_aoa_wrap,'bandwidth',0.2,'function','pdf','kernel','epanechnikov');
-[data,bin] = ksdensity(H_power,'bandwidth',0.1,'function','pdf','kernel','epanechnikov','npoints',length(H_power));
-plot(bin,data,'r-', 'LineWidth',1.5);
-% nbins = 25;
-% histogram(H_aoa,nbins,'Normalization','pdf');
-
-<<<<<<< HEAD
-% xx = hist(H_aoa_wrap,[-2*pi:2*pi]);
-% plot([-2*pi,2*pi],xx./numel(xx));
-
-hold on;
-% sigma = std(H_aoa_wrap); %5.3*pi/180;
-% sigma = std(H_power);
-% sigma = AS;
-sigma = 4.8*pi/180;
-
-%Truncated Laplacian
-t = -pi:0.1:pi;
-% t = -360:1:360;
-PAS = zeros(1,length(t));
-Q= 1/( 1-exp(-sqrt(2)*pi/sigma) );
-phi_0 = 0*pi/180; % mean
-for ii=1:length(t)
-    if t(ii) > phi_0-pi & t(ii) < phi_0+pi
-%     if t(ii) > 180 & t(ii) < 180
-       PAS(ii) = Q/sqrt(2)/sigma*exp( -sqrt(2)*abs(t(ii)-phi_0)/sigma );
-=======
-count = 0;
-for i = 1:length(AOARange)
-    count = count + AOAGraph(i);
-    if ~mod(AOARange(i), 1)
-        AOApdf(i) = count/length(allAOA);
-        count=0;
->>>>>>> 6f523e1ebed031ebf79ba572e664fb9d168da44f
-    end
-end
-plot(t,PAS,'k-.','LineWidth',1.5);
-
-% Uniform PAS
-% d = -2*pi:0.1:2*pi;
-% DeltaPhi = sqrt(3)*sigma;
-% Q = 1/2/DeltaPhi;
-% PAS = zeros(1,length(t));
-% for ii=1:length(t)
-%     if t(ii) > -DeltaPhi & t(ii) < DeltaPhi
-%        PAS(ii) = Q;
-%     end
-% end
-% plot(t,PAS,'b--','LineWidth', 1.5);
-
-xlhand = get(gca,'xlabel');
-set(xlhand,'string','Angle (radian)','fontsize',14);
-
-ylhand = get(gca,'ylabel');
-set(ylhand,'string','PAS','fontsize',14);
-
-legend('Simulated','Laplace');
-% legend('Simulated','Laplace','Uniform');
-% filename = ['PAS_frequency',frequency,'_',scenario,'_',num2str(N),'_CIRs'];
-% saveas(fh1, filename, 'epsc');
-
-% fh2 = figure(2);
-% set(fh2, 'color', 'white');
-% xi=linspace(min(H_delay),max(H_delay),100);
-% yi=linspace(min(H_aoa),max(H_aoa),100);
-% [XI YI]=meshgrid(xi,yi);
-% ZI = griddata(H_delay,H_aoa,H_power,XI,YI);
-% mesh(XI,YI,ZI);
-% 
-% xlhand = get(gca,'xlabel');
-% set(xlhand,'string','Delay (ns)','fontsize',14);
-% % xlim([100 1000]);
-% 
-% ylhand = get(gca,'ylabel');
-% set(ylhand,'string','AoA (degree)','fontsize',14);
-% 
-% zlhand = get(gca,'zlabel');
-% set(zlhand,'string','Power (mW)','fontsize',14);
-% filename = ['Delay-AOA_',frequency,'_',scenario,'_',num2str(N),'_CIRs'];
-% saveas(fh2, filename, 'epsc');
-
-% fh3 = figure(3);
-% set(fh3, 'color', 'white');
-% xi=linspace(min(H_delay),max(H_delay),100);
-% yi=linspace(min(H_aod),max(H_aod),100);
-% [XI YI]=meshgrid(xi,yi);
-% ZI = griddata(H_delay,H_aod,H_power,XI,YI);
-% mesh(XI,YI,ZI);
-% 
-% xlhand = get(gca,'xlabel');
-% set(xlhand,'string','Delay (ns)','fontsize',14);
-% % xlim([100 1000]);
-% 
-% ylhand = get(gca,'ylabel');
-% set(ylhand,'string','AoD (degree)','fontsize',14);
-% 
-% zlhand = get(gca,'zlabel');
-% set(zlhand,'string','Power (mW)','fontsize',14);
-% filename = ['Delay-AOD_',frequency,'_',scenario,'_',num2str(N),'_CIRs'];
-% saveas(fh3, filename, 'epsc');
+subplot(1,2,2);
+stem(h2_delay, h2_power, 'b');
+xlabel('Path delay (ns)');
+ylabel('Path power (mW)');
 
 
 
@@ -245,12 +121,6 @@ legend('Simulated','Laplace');
 
 
 
-<<<<<<< HEAD
 
-=======
-figure(1)
-plot(AOARange, AOApdf)
-xlabel('AOA(deg)');
-ylabel('number');
->>>>>>> 6f523e1ebed031ebf79ba572e664fb9d168da44f
+
 
