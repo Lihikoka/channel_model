@@ -4,6 +4,8 @@ clear
 frequency = '2873_GHz';
 scenario = 'outdoor';
 N=100;
+K_dB = 5; % 5~15
+
 string = ['load Results_',frequency,'_',scenario,'_',num2str(N),'_CIRs'];
 eval(string);
 
@@ -28,12 +30,11 @@ for i = 1:N
 end
 
 %%%%%%%%% generate Rician Fading channel matrix
-A = 
-for i=1:numTx
-    for j=1:numRx
-        
-    end
+for i=1:1
+    L = length(CIR(indexLOS(i)).pathDelays);
+    A = Ric_channel_matrix(numTx, numRx, K_dB, L);
 end
+
 
 % %%%%%%%%%% plot AoA distribution
 % AOARange = 0:0.01:360;
