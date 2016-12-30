@@ -29,10 +29,19 @@ for i = 1:N
     numRx = CIR(i).NumOfRxElements;
 end
 
-%%%%%%%%% generate Rician Fading channel matrix
+% Generate Uncorrelated Rician Fading channel matrix
 for i=1:1
     L = length(CIR(indexLOS(i)).pathDelays);
     A = Ric_channel_matrix(numTx, numRx, K_dB, L);
+end
+
+% Generate Tx and Rx correlation matrix
+Rtx = zeros(numTx, numTx);
+Rrx = zeros(numRx, numRx);
+for i=1:numRx
+    for j=i:numRx
+        %Rrx(i, j) = 
+    end
 end
 
 
