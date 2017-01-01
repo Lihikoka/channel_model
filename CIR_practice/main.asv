@@ -3,7 +3,7 @@ clear
 
 frequency = '2873_GHz';
 scenario = 'outdoor';
-N=20; % N users
+N=100; % N users
 K_dB = 5; % 5~15
 
 string = ['load Results_',frequency,'_',scenario,'_',num2str(N),'_CIRs'];
@@ -44,7 +44,6 @@ U = dftmtx(numTx); % DFT matrix
 H_b = ctranspose(U)*H; % Beamspace channel matrix
 s = (randn(N,1) + 1i*randn(N,1))/sqrt(2); % symbol vertor
 
-% Compute beamspace channel power
 for i=1:size(H_b, 2)
     H_b_power(i) = ctranspose(H_b(:,i))*H_b(:,i);
 end
