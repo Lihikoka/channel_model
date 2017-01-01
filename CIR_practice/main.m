@@ -72,7 +72,6 @@ end
 %%%%%%%%% generate Rician Fading channel matrix
 
 % Generate Uncorrelated Rician Fading channel matrix
->>>>>>> 5825a717afb55e7df958f3f67d4fae1d01426ef7
 for i=1:1
     L = length(CIR(indexLOS(i)).pathDelays);
     A = Ric_channel_matrix(numTx, numRx, K_dB, L);
