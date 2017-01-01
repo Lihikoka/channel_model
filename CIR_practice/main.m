@@ -33,22 +33,40 @@ for i = 1:N
 end
 
 % Simulation
-N = length(indexLOS);
+% N = length(indexLOS);
 Tx_power = 1;
 noise_power = 0.001; % sigma^2
 H = zeros(numTx, N);
 for i=1:N
     H(:,i) = CIR(i).H{1}; % 25 LOS users' first path CIR
 end
-U = dftmtx(numTx); % DFT matrix
+% DLA: DFT matrix
+U = zeros(numTx, numTx);
+I = zeros(numTx, 1);
+for l=1:numTx
+    I(l) = (l-1) - (numTx-1)/2;
+end
+for i=1:numTx
+    for j=1:numTx
+        U(i,j) = exp(-1i*2*pi*I(j)/numTx*I(i))/sqrt(numTx);
+    end
+end
+
 H_b = ctranspose(U)*H; % Beamspace channel matrix
 s = (randn(N,1) + 1i*randn(N,1))/sqrt(2); % symbol vertor
 
 % Compute beamspace channel power
 for i=1:size(H_b, 2)
-    H_b_power(i) = ctranspose(H_b(:,i))*H_b(:,i);
+    H_b_power =conj(H_b).*H_b;
 end
-plot(H_b_power)
+
+% contour(I, 1:N, transpose(H_b_power));
+% plot3(I, 1:N, H_b_power);
+% plot(conj(H_b).*H_b);
+for i=1:N
+    plot(conj(H_b(:,i)).*H_b(:,i))
+end
+
 % Precoding Matrix
 for i=1:N
     F_MF = H; % Matched filter

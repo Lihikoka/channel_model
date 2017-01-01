@@ -1,11 +1,15 @@
 clc
 clear
 
-n = 4;
-K = 100;
-a = zeros(4, 1);
+n = 81;
+K = 20;
+a = zeros(n, 1);
 I = zeros(n, 1);
 for l=1:n
     I(l) = (l-1) - (n-1)/2;
 end
 
+
+for i=1:n
+    a(i) = exp(-1i*2*pi*theta*I(i));
+end
