@@ -160,7 +160,7 @@ for CIRIdx = 1:N
 
         % received power between each Tx antenna and each Rx antenna for the a-th path
         CIR.HPowers{a,1} = abs(H_RC{a,1}).^2; 
-
+        
         % phase between each Tx antenna and each Rx antenna for the a-th path
         CIR.HPhases{a,1} = CIR.pathPhases(a)+angle(H_RC{a,1}); 
         CIR.HAODs{a,1} = CIR.AODs(a); % AOD for the ath path

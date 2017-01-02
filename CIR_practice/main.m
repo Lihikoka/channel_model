@@ -35,7 +35,7 @@ Tx_power = 1;
 noise_power = 0.001; % sigma^2
 H = zeros(numTx, N);
 for i=1:N
-    H(:,i) = CIR(i).H{1}; % 25 LOS users' first path CIR
+    H(:,i) = CIR(i).H{1}; % LOS users' first path CIR
 end
 % DLA: DFT matrix
 U = zeros(numTx, numTx);
@@ -59,35 +59,37 @@ end
 
 % contour(I, 1:N, transpose(H_b_power));
 % plot3(I, 1:N, H_b_power);
-% plot(conj(H_b).*H_b);
-for i=1:N
-    plot(conj(H_b(:,i)).*H_b(:,i))
-end
+plot(I, transpose(conj(H_b).*H_b));
+xlabel('TX BEAM index');
+ylabel('|H_b^H|^2');
+% for i=1:N
+%     plot(conj(H_b(:,i)).*H_b(:,i))
+% end
 
 % Precoding Matrix
-for i=1:N
-    F_MF = H; % Matched filter
-    F_ZF = H/(ctranspose(H)*H); % Zero-forcing 
-    eta = noise_power*numRx/Tx_power; % Regulization factor pf wiener filter
-    F_WF = (H*ctranspose(H)+eta*eye(numRx))\H; % Wiener filter
-
-    alpha_MF = sqrt(Tx_power/trace(F_MF*ctranspose(F_MF)));
-    alpha_ZF = sqrt(Tx_power/trace(F_ZF*ctranspose(F_ZF)));
-    alpha_WF = sqrt(Tx_power/trace(F_WF*ctranspose(F_WF)));
-
-    G_MF = alpha_MF * F_MF;
-    G_ZF = alpha_ZF * F_ZF;
-    G_WF = alpha_WF * F_WF;
-    
-    % Beamspace channel matrix and precoding matrix
-    
-    G_b_MF = U\G_MF;
-    G_b_ZF = U\G_ZF;
-    G_b_WF = U\G_WF;
-    
-    r_MF = ctranspose(H)*G_MF*s;
-    r_b_MF = ctranspose(H_b)*(G_b_MF)*s; %+ noise_power*(randn(N,1)+1i*randn(N,1))/sqrt(2);
-end
+% for i=1:N
+%     F_MF = H; % Matched filter
+%     F_ZF = H/(ctranspose(H)*H); % Zero-forcing 
+%     eta = noise_power*numRx/Tx_power; % Regulization factor pf wiener filter
+%     F_WF = (H*ctranspose(H)+eta*eye(numRx))\H; % Wiener filter
+% 
+%     alpha_MF = sqrt(Tx_power/trace(F_MF*ctranspose(F_MF)));
+%     alpha_ZF = sqrt(Tx_power/trace(F_ZF*ctranspose(F_ZF)));
+%     alpha_WF = sqrt(Tx_power/trace(F_WF*ctranspose(F_WF)));
+% 
+%     G_MF = alpha_MF * F_MF;
+%     G_ZF = alpha_ZF * F_ZF;
+%     G_WF = alpha_WF * F_WF;
+%     
+%     % Beamspace channel matrix and precoding matrix
+%     
+%     G_b_MF = U\G_MF;
+%     G_b_ZF = U\G_ZF;
+%     G_b_WF = U\G_WF;
+%     
+%     r_MF = ctranspose(H)*G_MF*s;
+%     r_b_MF = ctranspose(H_b)*(G_b_MF)*s; %+ noise_power*(randn(N,1)+1i*randn(N,1))/sqrt(2);
+% end
 
 
 
