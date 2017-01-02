@@ -13,9 +13,6 @@ allAOA = [];
 allPower = [];
 indexLOS = [];
 
-
-
-
 % fetch CIR data
 for i = 1:N
     string = ['CIR(', num2str(i), ') = ', 'CIR_Struct.CIR_', num2str(i), ';'];
