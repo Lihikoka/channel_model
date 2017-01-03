@@ -26,7 +26,7 @@ function powerSpectrum = getPowerSpectrum(numberOfClusterSubPaths,t_mn,subPathPo
 %       Column 6: azimuth angles of arrival, in degrees
 %       Column 6: zenith angles of departure, in degreeshe TX
 %
-% Copyright © 2016 NYU
+% Copyright ?2016 NYU
 
 %%% number of time clusters
 numberOfClusters = numel(numberOfClusterSubPaths);
