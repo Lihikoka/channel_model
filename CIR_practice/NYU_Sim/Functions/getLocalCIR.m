@@ -63,7 +63,8 @@ for CIRIdx = 1:N
     Pr_lin = CIR.pathPowers; 
 
     % Calculate local area CIRs and the corresponding parameters in a path-by-path manner
-    
+    Hw_RC = cell(nTap,1); % Yen-hua modified
+    H_RC = cell(nTap,1); % Yen-hua modified
     for a = 1:nTap
         % Determine the Tx and Rx antenna array types
         if strcmp(TxArrayType,'ULA') == true && strcmp(RxArrayType,'ULA') == true 
@@ -147,12 +148,10 @@ for CIRIdx = 1:N
         randRayleigh = randn(Nr,Nt)+j*randn(Nr,Nt); 
 
         % H matrix with independent Rician distribution
-        Hw_RC = cell(nTap,1); % Yen-hua modified
         Hw_RC{a,1} = sqrt(K/(K+1))*exp(j*pi/4)+sqrt(1/2/(K+1))*randRayleigh; 
         
         % H matrix for the a-th path, where the elements obey the small-scale Rician distribution
         % specified by Hw_RC and spatial correlation specified by Rt and Rr
-        H_RC = cell(nTap,1); % Yen-hua modified
         H_RC{a,1} = sqrt(Pr_lin(a))*Ur*Dr^(1/2)*Hw_RC{a,1}*Dt^(1/2)*Ut'; 
         
         % time delay for the a-th path

@@ -33,9 +33,11 @@ end
 % N = length(indexLOS);
 Tx_power = 1;
 noise_power = 0.001; % sigma^2
-H = zeros(numTx, N);
+% H = zeros(numTx, N);
+% H = CIR(1).H{1};
+H = [];
 for i=1:N
-    H(:,i) = CIR(i).H{1}; % LOS users' first path CIR
+    H = vertcat(H, CIR(i).H{1,1}); % LOS users' first path CIR
 end
 % DLA: DFT matrix
 U = zeros(numTx, numTx);
@@ -49,20 +51,48 @@ for i=1:numTx
     end
 end
 
-H_b = ctranspose(U)*H; % Beamspace channel matrix
+H_b = H*U; % Beamspace channel matrix
 s = (randn(N,1) + 1i*randn(N,1))/sqrt(2); % symbol vertor
 
 % Compute beamspace channel power
 for i=1:size(H_b, 2)
+    H_power = conj(H).*H;
     H_b_power =conj(H_b).*H_b;
 end
 
+<<<<<<< HEAD
 plot(I, transpose(conj(H_b).*H_b));
+=======
+for i=1:size(H_b, 1)
+    H_b_power_max = 0;
+    H_power_max = 0;
+    for j=1:size(H_b, 2)
+        if H_b_power(i,j) > H_b_power_max
+            H_b_power_max = H_b_power(i,j);
+        end
+        if H_power(i,j) > H_power_max
+            H_power_max = H_power(i,j);
+        end
+    end
+    H_power(i,:) = H_power(i,:)/H_power_max;
+    H_b_power(i,:) = H_b_power(i,:)/H_b_power_max;
+end
+% Normalization
+% contour(H_b_power);
+% plot3(I, 1:N, H_b_power);
+
+% plot(I, H_b_power);
+for i=1:N
+    figure(1)
+    plot(I, H_power(i,:))
+    hold on
+    plot(I, H_b_power(i,:))
+    hold off
+end
+>>>>>>> c08c7926d795326d2f76e55adb3e285cdebdb43f
 xlabel('TX BEAM index');
 ylabel('|H_b^H|^2');
-% for i=1:N
-%     plot(conj(H_b(:,i)).*H_b(:,i))
-% end
+
 
 % Precoding Matrix
 % for i=1:N

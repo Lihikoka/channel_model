@@ -42,7 +42,7 @@ theta_3dB_RX = 10; phi_3dB_RX = 10;
 
 % Input parameters for the function getLocalCIR
 TxArrayType = 'ULA'; RxArrayType = 'ULA'; 
-Nt = 81; Nr = 1; 
+Nt = 81; Nr = 4; 
 dTxAnt = 1/2; dRxAnt = 1/2; 
 Wt = 1; Wr = 2;
 
