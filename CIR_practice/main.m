@@ -57,8 +57,6 @@ for i=1:size(H_b, 2)
     H_b_power =conj(H_b).*H_b;
 end
 
-% contour(I, 1:N, transpose(H_b_power));
-% plot3(I, 1:N, H_b_power);
 plot(I, transpose(conj(H_b).*H_b));
 xlabel('TX BEAM index');
 ylabel('|H_b^H|^2');
