@@ -14,13 +14,13 @@ function subpathPowers = ...
 %   - subpathPowers: a structure containing the subpath powers, relative to
 %   1 mW
 %
-% Copyright © 2016 NYU
+% Copyright ?2016 NYU
 
 %%% number of clusters
 numberOfClusters = size(clusterPowers,2);
 
 %%% initialize the structure that will contain component powers
-subpathPowers = struct;   
+subpathPowers = struct;
 
 for clusterIndex = 1:numberOfClusters
     
@@ -41,7 +41,7 @@ for clusterIndex = 1:numberOfClusters
 
     %%% normalize subpath power ratios such that their sum equals 1
     subPathRatios = subPathRatios_temp/sum(subPathRatios_temp)*clusterPower;    
-        
+    
     %%% ensure the subpath powers are at least equal to the dynamicRange
     powerTemp = max(subPathRatios,10^((TXPower-dynamicRange)/10));
     

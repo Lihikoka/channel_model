@@ -73,8 +73,8 @@ for CIRIdx = 1:N
             for i = 1:Nr  
                 for m = 1:Nr
                     % Spatial correlation between Rx antenna elements i and m in a ULA
-                   Rr(i,m) = (A.*exp(-B.*dRxAnt.*wl.*abs(i-m))-C).*exp(-j.*unifrnd(-pi,pi).*(i-m)); 
-                 end
+                    Rr(i,m) = (A.*exp(-B.*dRxAnt.*wl.*abs(i-m))-C).*exp(-j.*unifrnd(-pi,pi).*(i-m)); 
+                end
             end 
 
             % Calculate Tx spatial correlation matrix Rt

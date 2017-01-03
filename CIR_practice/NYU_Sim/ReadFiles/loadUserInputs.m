@@ -13,7 +13,7 @@ scenario = 'Outdoor';
 accessType = 'Mobile';
 
 % Number of desired independent users in the current simulation.
-N = 20;
+N = 10;
 
 % Percentage of LOS users (a number between 0 and 1)
 % PercentLOS only works for the Joint scenario, not the individual
@@ -42,7 +42,7 @@ theta_3dB_RX = 10; phi_3dB_RX = 10;
 
 % Input parameters for the function getLocalCIR
 TxArrayType = 'ULA'; RxArrayType = 'ULA'; 
-Nt = 81; Nr = 4; 
+Nt = 16; Nr = 4; 
 dTxAnt = 1/2; dRxAnt = 1/2; 
 Wt = 1; Wr = 2;
 
