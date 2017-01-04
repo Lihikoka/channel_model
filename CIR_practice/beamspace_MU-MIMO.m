@@ -1,18 +1,26 @@
 clc
 clear
 
-Nt = 81; Nr = 1;  % Number of antenna at Tx and Rx
+Nt = 81; Nr = 2;  % Number of antenna at Tx and Rx
 K = 20; % Number of user
 L = 5; % Number of path
-PL = [1, 0.3, 0.2, 0.15, 0.1]; % Path losses
+PL = [1, 0.1, 0.3, 0.2, 0.15]; % Path losses
 
-phi = (rand(K, L)-0.5)*pi; % K users' azimuth in radian in [-pi/2, pi/2]
+phi = rand(K, L)*pi - pi/2; % K users' azimuth in radian in [-pi/2, pi/2]
 phi_degree = phi*180/pi;
 theta = 0.5*sin(phi);
 U = zeros(Nt, Nt);
 I = zeros(Nt, 1);
 a = zeros(Nt, L);
 beta = zeros(L, 1);
+
+% % Parameters for path loss model
+% % 28GHz, TX height=7, Rx height=1.5
+% alpha = 75.85; % in dB
+% beta_bar = 3.73;
+% d = 100; % TRSep
+% PL_dB = alpha + 3.73*10*log(d);
+% PL = 10^(-PL_dB/10);
 
 % Beam index set
 for l=1:Nt
@@ -82,15 +90,13 @@ xlabel('TX BEAM DIRECTION (degree)');
 ylabel('MOBILE STATION INDEX');
 axis([-90, 90 -inf, inf]);
 
-
+figure(4)
 for i=1:K
-    figure(4)
     subplot(3, 1, 1);
-    stem(-90/Nt+180/Nt*I, H_b_LOS_power(i, :));
+    stem(I, H_b_LOS_power(i, :));
     title('LOS only');
-    xlabel('TX BEAM DIRECTION (degree)');
+    xlabel('TX BEAM INDEX');
     ylabel('|H_b^H|^2');
-    axis([-90, 90 -inf, inf]);
     
     subplot(3, 1, 2);
     stem(I, H_b_power(i, :));
@@ -105,3 +111,14 @@ for i=1:K
     ylabel('|H_b^H|^2');
     hold off
 end
+
+
+
+
+
+% for i = 1:K
+%     polarplot(-pi/2:pi/(Nt-1):pi/2, H_b_LOS_power(i, :));
+%     hold on
+% %     stem(I, H_b_power(i, :));
+% end
+%rlim([0.5 0])
