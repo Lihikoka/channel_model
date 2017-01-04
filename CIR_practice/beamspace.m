@@ -62,21 +62,21 @@ H_b_NLOS_power = abs(ctranspose(H_b_NLOS)).^2;
 
 
 figure(1)
-contour(-90/Nt+180/Nt*I, 1:K, H_b_LOS_power);
+contour(I*180/(Nt-1), 1:K, H_b_LOS_power);
 title('Counter plot - LOS only');
 xlabel('TX BEAM DIRECTION (degree)');
 ylabel('MOBILE STATION INDEX');
 axis([-90, 90 -inf, inf]);
 
 figure(2)
-contour(-90/Nt+180/Nt*I, 1:K, H_b_power);
+contour(I*180/(Nt-1), 1:K, H_b_power);
 title('Counter plot - LOS and NLOS');
 xlabel('TX BEAM DIRECTION (degree)');
 ylabel('MOBILE STATION INDEX');
 axis([-90, 90 -inf, inf]);
 
 figure(3)
-contour(-90/Nt+180/Nt*I, 1:K, H_b_NLOS_power);
+contour(I*180/(Nt-1), 1:K, H_b_NLOS_power);
 title('Counter plot - NLOS only');
 xlabel('TX BEAM DIRECTION (degree)');
 ylabel('MOBILE STATION INDEX');
@@ -86,11 +86,12 @@ axis([-90, 90 -inf, inf]);
 for i=1:K
     figure(4)
     subplot(3, 1, 1);
-    stem(-90/Nt+180/Nt*I, H_b_LOS_power(i, :));
+    stem(I*180/(Nt-1), H_b_LOS_power(i, :));
     title('LOS only');
     xlabel('TX BEAM DIRECTION (degree)');
     ylabel('|H_b^H|^2');
-    axis([-90, 90 -inf, inf]);
+    %axis([-90, 90 -inf, inf]);
+    phi_degree(i,1)
     
     subplot(3, 1, 2);
     stem(I, H_b_power(i, :));
